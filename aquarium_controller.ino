@@ -55,6 +55,7 @@ void handleValvePath() {
     else if (valveState == "close"){
       on = false;
     }
+     previousReportMillis = millis();
   }
   server.send(200, "text/plain", valveState);
  }
@@ -99,6 +100,10 @@ void loop() {
   delay(1000);
   setValve();
   server.handleClient();          //Handle client requests
+  if (millis() >= previousReportMillis + 240000) {
+    Serial.println("Master has timed out!!!!!!");
+    on = false;
+  }
 }
 
 
